@@ -18,6 +18,7 @@
 - SPEC.mdとCLAUDE.mdに従う
 - テンプレを直接参照する
 - 推測実装を行わない
+- 実装時のテンプレ取得元は GitHub とし、本プロジェクトの開発時のみ `resources/000_originals/*` を参照する
 
 ---
 
@@ -43,10 +44,11 @@
 
 ## 2. 必須チェック
 
-- resources配下を参照しているか
+- 本プロジェクトの作業時に resources配下を参照しているか
 - テンプレを改変していないか
-- ローカルコピーを利用しているか
-
+- 生成スクリプトが GitHub からテンプレート取得する前提になっているか
+- 統合先が `integlated` フォルダになっているか
+- `integlated` フォルダが既に存在し、その中身が.gitignore以外にも存在する場合にメッセージ表示して中断する実装になっているか
 ---
 
 ## 3. 単純性の強制
@@ -63,8 +65,8 @@
 
 以下は必ず衝突扱い：
 
-- claude.md
-- copilot-instructions.md
+- `.claude/CLAUDE.md`
+- `.github/copilot-instructions.md`
 
 ---
 
@@ -84,6 +86,7 @@
 - bash / PowerShell対応
 - Gitのみで動作
 - 衝突処理が正しい
+- 選択テンプレートのみを `git > markdown > python > c` の優先順で結合する
 
 ---
 

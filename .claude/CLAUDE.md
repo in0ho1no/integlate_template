@@ -85,8 +85,9 @@
 
 テンプレートは以下から取得する：
 
-- ローカル（resources配下）を優先
-- GitHubから直接再取得しないこと
+- 生成スクリプト実行時は、GitHub上のテンプレートリポジトリから取得する
+- 取得は `git clone --depth 1` 相当の shallow clone を前提とする
+- 本プロジェクトの実装・レビュー時のみ、`resources/000_originals` を参照してよい
 
 ---
 
@@ -98,6 +99,20 @@
 ---
 
 ## 5. ファイル処理ルール
+
+### 5.0 テンプレート選択と順序
+
+- テンプレートの自動付与は行わない
+- ユーザが選択したテンプレートのみを統合対象とする
+- 優先順位は以下とする
+  - `Git_Template`
+  - `Markdown_Template`
+  - `Python_Template`
+  - `C_template`
+- ベーステンプレートは、選択されたテンプレートのうち最上位のものとする
+- 後続テンプレートは上記順に追記する
+- 出力先は実行ディレクトリ直下の `integlated` フォルダとする
+- `integlated` フォルダが既に存在し、その中身が.gitignore以外にも存在する場合は、その旨をメッセージ表示して処理を中断する
 
 ### 5.1 衝突定義
 
@@ -124,20 +139,28 @@
 
 → 追記
 
+- テンプレ順に末尾へ追記する
+- 各テンプレの間には空行を1行追加する
+- 重複行の削除は行わない
+- ファイル末尾は必ず改行する
+
 ---
 
 #### ドキュメント
 
-- README.md
+- `intro_temp_git.md`
+- `intro_temp_markdown.md`
+- `intro_temp_py.md`
+- `intro_temp_c.md`
 
-→ Gitテンプレをベースに追記
+→ テンプレート内容をそのまま追加する
 
 ---
 
 #### 指示ファイル（重要）
 
-- claude.md
-- copilot-instructions.md
+- `.claude/CLAUDE.md`
+- `.github/copilot-instructions.md`
 
 → 必ず衝突扱い
 
