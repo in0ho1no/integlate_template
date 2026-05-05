@@ -167,6 +167,10 @@ try {
         $cloneDir = Join-Path $workDir $tmpl
         Write-Host "Cloning $tmpl from $url ..."
         & git clone --depth 1 $url $cloneDir
+        if ($LASTEXITCODE -ne 0) {
+            Write-Error "Failed to clone '$tmpl' (exit code $LASTEXITCODE). Aborting."
+            exit 1
+        }
         Write-Host "Applying $tmpl ..."
         Apply-Template $cloneDir $tmpl
     }
