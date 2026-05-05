@@ -1,0 +1,29 @@
+{
+    "folders": [
+        {
+            "path": "."
+        }
+    ],
+	"settings": {
+		// ミニマップを非表示にする
+		"editor.minimap.enabled": false,
+		// カラーカスタマイズ
+		"workbench.colorCustomizations": {
+			"activityBar.background": "#e2df16b4",
+			"activityBar.foreground": "#06065df5",
+		},
+
+		// フォント設定
+		"editor.fontFamily": "Consolas, 'Cascadia Mono', 'SF Mono', Menlo, Monaco, 'Courier New', monospace",
+
+		"files.associations": {
+			"*.merge.git": "markdown",
+			"*.merge.python": "markdown",
+			"*.merge.c": "markdown",
+			"*.merge.markdown": "markdown"
+		},
+		"explorer.sortOrder": "type",
+		"explorer.decorations.badges": true,
+		"explorer.decorations.colors": true
+	}
+}
