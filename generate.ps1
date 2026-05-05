@@ -147,9 +147,9 @@ if ($sorted.Count -eq 0) {
 Write-Host "Selected templates (in order): $($sorted -join ', ')"
 
 if (Test-Path $OUTPUT_DIR) {
-    $otherFiles = Get-ChildItem -Path $OUTPUT_DIR -Recurse -File |
-        Where-Object { $_.Name -ne ".gitignore" }
-    if ($otherFiles.Count -gt 0) {
+    $otherItems = Get-ChildItem -Path $OUTPUT_DIR -Recurse |
+        Where-Object { $_.PSIsContainer -or $_.Name -ne ".gitignore" }
+    if ($otherItems.Count -gt 0) {
         Write-Host "Error: '$OUTPUT_DIR' already exists and contains files other than .gitignore. Aborting."
         exit 1
     }

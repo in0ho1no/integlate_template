@@ -169,7 +169,7 @@ main() {
 
     if [ -d "$OUTPUT_DIR" ]; then
         local other
-        other=$(find "$OUTPUT_DIR" -type f -not -name ".gitignore" 2>/dev/null | head -1)
+        other=$(find "$OUTPUT_DIR" -mindepth 1 \( -type d -o \( -type f ! -name ".gitignore" \) \) 2>/dev/null | head -1)
         if [ -n "$other" ]; then
             echo "Error: '$OUTPUT_DIR' already exists and contains files other than .gitignore. Aborting."
             exit 1
