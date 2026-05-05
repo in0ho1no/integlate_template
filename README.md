@@ -7,3 +7,6 @@
 - [Pythonテンプレ](https://github.com/in0ho1no/Python_Template)
 - [Cテンプレ](https://github.com/in0ho1no/C_template)
 - [Markdownテンプレ](https://github.com/in0ho1no/Markdown_Template)
+
+Windows では `generate-win.bat` から起動する。
+`generate-win.ps1` は直接起動しない。
