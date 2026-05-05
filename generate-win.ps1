@@ -1,3 +1,4 @@
+# Windows では generate-win.bat から起動すること。generate-win.ps1 の直接起動は想定しない。
 # 統合優先順位。ユーザ指定の順序に関わらず、この順で処理・追記される
 $TEMPLATES_ORDER = @("git", "markdown", "python", "c")
 $TEMPLATE_URLS = @{
