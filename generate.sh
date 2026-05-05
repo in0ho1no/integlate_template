@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
+# 統合優先順位。ユーザ指定の順序に関わらず、この順で処理・追記される
 TEMPLATES_ORDER="git markdown python c"
 TEMPLATE_URLS_git="https://github.com/in0ho1no/Git_Template"
 TEMPLATE_URLS_markdown="https://github.com/in0ho1no/Markdown_Template"
@@ -19,6 +20,7 @@ get_template_url() {
     esac
 }
 
+# 異常終了・シグナル受信時にも一時ディレクトリを残さないため
 cleanup() {
     [ -n "$WORK_DIR" ] && rm -rf "$WORK_DIR"
 }
@@ -65,6 +67,7 @@ select_and_sort_templates() {
         done
     fi
 
+    # ユーザ指定順を捨て、定義済み優先順位に従って並べ直す
     local sorted=""
     for tmpl in $TEMPLATES_ORDER; do
         # shellcheck disable=SC2086
@@ -76,6 +79,7 @@ select_and_sort_templates() {
     echo "${sorted# }"
 }
 
+# 複数テンプレートの設定を蓄積する目的で追記対象とするファイルを識別する
 is_mechanical_merge() {
     case "$(basename "$1")" in
         .gitignore|.editorconfig|.gitattributes) return 0 ;;
@@ -83,6 +87,7 @@ is_mechanical_merge() {
     esac
 }
 
+# ツール設定ファイルは内容の無言上書きを防ぐため、常に衝突として扱う
 is_instruction_file() {
     local norm_rel
     norm_rel=$(printf '%s' "$1" | tr '\\' '/')
@@ -92,6 +97,7 @@ is_instruction_file() {
     esac
 }
 
+# 追記後もファイルが改行で終わることを保証する（連続追記時の行境界を守るため）
 ensure_trailing_newline() {
     if [ -n "$(tail -c1 "$1")" ]; then
         printf '\n' >> "$1"
