@@ -1,0 +1,7 @@
+{
+    "recommendations": [
+        // C/C++環境の推奨
+        "ms-vscode.cpptools",  // IntelliSense、定義ジャンプ、デバッグなどの基本機能
+        "ms-vscode.cpptools-themes",  // C/C++ Tools 系のアイコン・テーマ補助
+    ]
+}
