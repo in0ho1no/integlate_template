@@ -47,14 +47,14 @@ function Select-AndSortTemplates {
 function Test-IsMechanicalMerge {
     param([string]$RelPath)
     $name = [System.IO.Path]::GetFileName($RelPath)
-    return $name -in @(".gitignore", ".editorconfig", ".gitattributes")
+    return ($name -in @(".gitignore", ".editorconfig", ".gitattributes"))
 }
 
 # ツール設定ファイルは内容の無言上書きを防ぐため、常に衝突として扱う
 function Test-IsInstructionFile {
     param([string]$RelPath)
     $norm = $RelPath.Replace('\', '/')
-    return $norm -in @(".claude/CLAUDE.md", ".github/copilot-instructions.md")
+    return ($norm -in @(".claude/CLAUDE.md", ".github/copilot-instructions.md"))
 }
 
 # 追記後もファイルが改行で終わることを保証する（連続追記時の行境界を守るため）
