@@ -47,39 +47,52 @@ function Select-AndSortTemplates {
 # 複数テンプレートの設定を蓄積する目的で追記対象とするファイルを識別する
 function Test-IsMechanicalMerge {
     param([string]$RelPath)
+
     $name = [System.IO.Path]::GetFileName($RelPath)
-    return ($name -in @(".gitignore", ".editorconfig", ".gitattributes"))
+    $targets = @(".gitignore", ".editorconfig", ".gitattributes")
+    return $targets.Contains($name)
 }
 
 # ツール設定ファイルは内容の無言上書きを防ぐため、常に衝突として扱う
 function Test-IsInstructionFile {
     param([string]$RelPath)
-    $norm = $RelPath.Replace('\', '/')
-    return ($norm -in @(".claude/CLAUDE.md", ".github/copilot-instructions.md"))
+
+    $norm = $RelPath -replace "\\", "/"
+    $targets = @(".claude/CLAUDE.md", ".github/copilot-instructions.md")
+    return $targets.Contains($norm)
 }
 
 # 追記後もファイルが改行で終わることを保証する（連続追記時の行境界を守るため）
 function Ensure-TrailingNewline {
     param([string]$FilePath)
+
     $bytes = [System.IO.File]::ReadAllBytes($FilePath)
-    if ($bytes.Length -gt 0 -and $bytes[-1] -ne 10) {
-        $stream = [System.IO.File]::Open($FilePath, [System.IO.FileMode]::Append)
-        $stream.WriteByte(10)
-        $stream.Close()
+    if ($bytes.Length -eq 0) {
+        return
     }
+
+    $lastIndex = $bytes.Length - 1
+    if ($bytes[$lastIndex] -eq 10) {
+        return
+    }
+
+    $stream = [System.IO.File]::Open($FilePath, [System.IO.FileMode]::Append)
+    $stream.WriteByte(10)
+    $stream.Close()
 }
 
 function Test-FilesEqual {
     param([string]$Path1, [string]$Path2)
+
     $h1 = (Get-FileHash -Path $Path1 -Algorithm SHA256).Hash
     $h2 = (Get-FileHash -Path $Path2 -Algorithm SHA256).Hash
-    return $h1 -eq $h2
+    return ($h1 -eq $h2)
 }
 
 function Process-File {
     param([string]$Src, [string]$Rel, [string]$TmplName)
 
-    $normRel = $Rel.Replace('\', '/')
+    $normRel = $Rel -replace "\\", "/"
     $dest = Join-Path $OUTPUT_DIR $Rel
     $destDir = Split-Path $dest -Parent
 
